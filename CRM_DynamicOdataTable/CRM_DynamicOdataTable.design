@@ -1,0 +1,6 @@
+<design:component>
+    <design:attribute name="externalIdName" label="External Id Name" description="API Name of the External Id to use." />
+    <design:attribute name="sObjectExternal"   label="Object External Name" description="API Name of the Object to use. This only needs to be populated when not on a record detail page." />
+    <design:attribute name="fieldSetName"  label="Field Set Name" description="API Name of the field set to use." />
+    <design:attribute name="filterName" label="Filter Name" description="API Name of the Filter to use." />
+</design:component>

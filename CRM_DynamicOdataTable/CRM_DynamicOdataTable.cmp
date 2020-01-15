@@ -1,0 +1,41 @@
+<!--
+@File Name:   CRM_DynamicOdataTable
+@Description: 
+@Author:      Michaell Reis
+@Group:       Aura
+@Modification Log :
+======================================================================================
+Ver       Date        Author                   Modification
+1.0       2018-11-29  Michaell Reis            
+-->
+<aura:component controller="CRM_WorkOrderStatusPopupController"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:hasSObjectName"
+    access="global">
+
+    <aura:attribute name="headerLabel"    type="String"/>
+    <aura:attribute name="recordId"    type="Id"/>
+    <aura:attribute name="sObjectName" type="String"/>
+    <aura:attribute name="externalIdName" type="String"/>
+    <aura:attribute name="fieldSetName" type="String"/>
+    <aura:attribute name="sObjectExternal" type="String"/>
+    <aura:attribute name="filterName" type="String"/>
+    <aura:attribute name="object" type="object"/>
+
+    <force:recordData layoutType="FULL"
+        recordId="{!v.recordId}"
+        targetFields="{!v.object}"
+        recordUpdated="{!c.handleRecordUpdated}"
+    />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:handler event="force:refreshView" action="{!c.isRefreshed}" />-->
+    <!--<aura:handler event="aura:doneWaiting" action="{!c.isRefreshed}"/>-->
+
+    <lightning:card  iconName="standard:account">
+        <aura:set  attribute="title">
+            <b>{!v.headerLabel}</b>
+        </aura:set>
+        <div class="slds-modal__content slds-p-around--medium">
+            <div aura:id="openDataTable" ></div>
+        </div>
+    </lightning:card>
+</aura:component>
