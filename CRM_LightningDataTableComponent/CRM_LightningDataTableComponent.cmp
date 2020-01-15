@@ -1,0 +1,28 @@
+<!--
+@File Name:   CRM_LightningDataTableComponent
+@Description: 
+@Author:      Michaell Reis
+@Group:       Aura
+@Modification Log :
+======================================================================================
+Ver       Date        Author                   Modification
+1.1       2018-12-03  Michaell Reis    		
+-->
+<aura:component controller="CRM_LightningDataTableController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="tableData" type="Object"/>
+    <aura:attribute name="tableColumns" type="List"/>
+    <aura:attribute name="fieldSet" type="String"/>
+    <aura:attribute name="objectName" type="String"/>
+    <aura:attribute name="queryFilter" type="String"/>
+    <aura:attribute name="loadingText" type="String"/>
+    <aura:attribute name="externalObject" type="String"/>
+    <aura:attribute name="externalField" type="String"/>
+    <aura:attribute name="externalLabel" type="String"/>
+ 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <div aura:id="inprogress">{!v.loadingText}</div>
+    <lightning:datatable data="{! v.tableData }" 
+        columns="{! v.tableColumns }" 
+        keyField="Id"/>
+</aura:component>
