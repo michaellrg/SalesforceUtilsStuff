@@ -1,5 +1,5 @@
 /**
-* Deloitte
+* 
 * @author           Michaell Reis 
 * Project:          
 * Description:      Class responsible to the Rest Connection
