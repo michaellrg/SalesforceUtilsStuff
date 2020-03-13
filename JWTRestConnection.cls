@@ -13,33 +13,52 @@
 ***************************************************************************************************/
 public with sharing class JWTRestConnection {
 
-    private String serviceName {get;set;}
-    private ServicioIntegracion__mdt servicio {set; get;}
+    @testVisible private ServicioIntegracion__mdt servicio {set; get;}
+    @testVisible private PathIntegracion__mdt path {set; get;}
     private AccessToken token { set; get {
 		token = token == null || token.expirationTime <=  (dateTime.now().getTime()/1000)+1 ? this.getToken() : token;
 		return token;
 	}}
-    public  Map<String, TypeParam> bodyParam = new Map<String, TypeParam>();
     public JWTRestConnection(String name) {
 
-        this.servicio =[SELECT ISS__c,IsMock__c,MockClass__c,Secret_Key__c,URLBase__c   FROM ServicioIntegracion__mdt WHERE MasterLabel =: name LIMIT 1];
+         this.servicio = [SELECT ISS__c, IsMock__c, MockClass__c, Secret_Key__c, URLBase__c, MasterLabel FROM ServicioIntegracion__mdt WHERE MasterLabel =: name LIMIT 1];
+
+         this.path = [SELECT PathURL__c, Method__c, Headers__c, MasterLabel FROM PathIntegracion__mdt WHERE MasterLabel =: namePath LIMIT 1];
 
     }
-    public HttpResponse callService ( String method, String path,  Map<String, String> headerParam,String body){
+    public HttpResponse callService (Map <String, Map<String,String>> connSetting, String body){
         //this.+
         String endpoint = servicio.URLBase__c +path;
         HttpRequest request = new HttpRequest();
         request.setEndpoint(endpoint);
-		request.setMethod(method);
-        for(String param : headerParam.keyset()) {
-            if(param =='Authorization'){
-                System.debug('Authorization');
-                request.setHeader(param, token.accessToken);
-            }else {
-                System.debug('others');
-                request.setHeader(param, headerParam.get(param));
+	request.setMethod(method);
+        if(connSetting.containsKey('path')) {            
+            for(String param : connSetting.get('path').keyset()) {
+                endpoint=endpoint+'/'+connSetting.get('path').get(param);
             }
+        }
+        if(connSetting.containsKey('query')){
+            Integer i = 0;
+            endpoint +=!connSetting.get('query').isEmpty()?'?':'';
+            for(String param : connSetting.get('query').keyset()) {
+                endpoint += param + '=' +connSetting.get('query').get(param);
+                endpoint += ++i == connSetting.get('query').size() ? '' : '&';
 
+            }
+        }
+        if(connSetting.containsKey('header')){
+            connSetting.get('header').putAll(fillMapHeader(path.Headers__c));
+            for(String param : connSetting.get('header').keySet()) {
+                if(param =='Authorization'){
+                    System.debug('Authorization');
+                    request.setHeader(param,'Bearer '+ token.accessToken);
+                }else{
+                    System.debug('others');
+                    request.setHeader(param,connSetting.get('header').get(param));
+                }
+                System.debug('Param Header :'+param+' Value : '+connSetting.get('header').get(param));
+
+            }
         }
 
         System.debug('Header ' +request);
@@ -51,12 +70,12 @@ public with sharing class JWTRestConnection {
         try {
             MockRestInterface mockClass = String.isNotBlank(this.servicio.MockClass__c)  ?  (MockRestInterface) Type.forName(this.servicio.MockClass__c).newInstance() :null ;
 
-			response = this.servicio.IsMock__c && mockClass !=null ? (HttpResponse)mockClass.respond(request) : new Http().send(request);
+	    response = this.servicio.IsMock__c && mockClass !=null ? (HttpResponse)mockClass.respond(request) : new Http().send(request);
 
-			if(response.getStatusCode() != 200) {
+	   if(response.getStatusCode() != 200) {
                 System.debug('Code '+response.getStatusCode());
 
-			}
+	   }
 
         } catch(CalloutException ex) {
             throw new ServiceException(ex.getMessage(), ex);
