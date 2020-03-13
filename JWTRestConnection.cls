@@ -19,7 +19,7 @@ public with sharing class JWTRestConnection {
 		token = token == null || token.expirationTime <=  (dateTime.now().getTime()/1000)+1 ? this.getToken() : token;
 		return token;
 	}}
-    public JWTRestConnection(String name) {
+    ublic JWTRestConnection(String name, String namePath) {
 
          this.servicio = [SELECT ISS__c, IsMock__c, MockClass__c, Secret_Key__c, URLBase__c, MasterLabel FROM ServicioIntegracion__mdt WHERE MasterLabel =: name LIMIT 1];
 
