@@ -1,0 +1,14 @@
+<aura:component controller="rtPicklistController" implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="selectedId" type="String"/>
+    <aura:attribute name="options" type="Object"/>
+    <aura:attribute name="object" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+    
+	<lightning:select name="recordTypeList" label="Select a recordType:" aura:id="recordTypeList" value="{!v.selectedId}" onchange="{! c.onChange }">
+        <aura:iteration items="{!v.options}" var="option">
+            <option text="{!option.label}" value="{!option.value}"/>
+        </aura:iteration>
+    </lightning:select>
+    
+</aura:component>
