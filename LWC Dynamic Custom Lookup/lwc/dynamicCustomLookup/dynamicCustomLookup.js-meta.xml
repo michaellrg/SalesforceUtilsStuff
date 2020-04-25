@@ -1,0 +1,19 @@
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="dynamicCustomLookup">
+     <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Dynamic Lookup</masterLabel>
+    <description>Mobile suitable Object Lookup, comtiable to  extended form.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
+            <property name="objectApi" label="Object" type="String" required="true"/>
+            <property name="fieldAPI" label="Field API Name" type="String" required="true" />
+            <property name="iconName" label="Icon" type="String" default="standard:account" required="false"/>
+            <property name="fieldSet" label="FieldSet Name" type="String" required="false" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

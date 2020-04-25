@@ -1,0 +1,44 @@
+<template>
+    <lightning-card title={label} icon-name={iconName}>
+
+        <div class={resultClass} data-select="single">
+
+            <div class="slds-form-element__control slds-p-horizontal_small">
+                <!-- sequence completed record selected -->
+                <div if:true={selectedRecord}>
+
+                        <div class="slds-pill-container">
+                            <lightning-pill class="pillSize" label={selectedRecord.Name} onremove={handlePillRemove}>
+                                <lightning-icon icon-name={iconName} variant="plain"
+                                    alternative-text={selectedRecord.Name}>
+                                </lightning-icon>
+                            </lightning-pill>
+                        </div>
+                </div>
+                <!-- Input for search term -->
+                <p class="slds-p-horizontal_small">
+                    <c-dynamic-custom-lookup-debounced label={label} onchange={handleSearchTerm}
+                        if:false={selectedRecord} value={lastSearchValue}>
+                    </c-dynamic-custom-lookup-debounced>
+                </p>
+
+            </div>
+            <ul style="min-height:40px;margin-top:0px !important"
+                class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-lookup__menu slds"
+                role="listbox">
+                <lightning-spinner variant="brand" size="small" if:true={showSpinner}></lightning-spinner>
+                <center>{message}</center>
+                <template if:true={results} for:each={results} for:item="singleRec">
+                    <c-dynamic-custom-lookup-result icon-name={iconName} record={singleRec}
+                        onselection={handleRecordSelect} key={singleRec.Id}></c-dynamic-custom-lookup-result>
+                </template>
+            </ul>
+
+        </div>
+        <br>
+        <p class="slds-p-horizontal_small">
+            <lightning-button variant="brand" label="Save" title="Primary action" onclick={updateObject}
+            class="slds-m-right_x-small" ></lightning-button>
+            </p>
+    </lightning-card>
+</template>
