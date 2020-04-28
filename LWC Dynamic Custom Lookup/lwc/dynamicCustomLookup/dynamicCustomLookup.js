@@ -63,11 +63,11 @@ export default class dynamicCustomLookup extends LightningElement {
                      );
                    } else if (data) {
                      this.record = data;
-                     this.recordIdParent = this.record.fields[this.fieldAPI].value;
+                     this.recordIdParent = this.record.fields[this.fieldAPI].value != undefined ? this.record.fields[this.fieldAPI].value: undefined;
                      if(this.record.fields[this.fieldAPI].value!= undefined ){
                       let parentObject = {
                         recordId: this.record.fields[this.fieldAPI].value,
-                        objectName: this.objectApiName
+                        objectName: this.objectApi,
                       };
                       fetchObjectLookup(parentObject)
                         .then((result) => {
