@@ -30,7 +30,7 @@ public with sharing class JWTRestConnection {
         //this.+
         String endpoint = servicio.URLBase__c +path;
         HttpRequest request = new HttpRequest();
-        request.setEndpoint(endpoint);
+       
 	request.setMethod(method);
         if(connSetting.containsKey('path')) {            
             for(String param : connSetting.get('path').keyset()) {
@@ -46,6 +46,8 @@ public with sharing class JWTRestConnection {
 
             }
         }
+	    
+	request.setEndpoint(endpoint);
         if(connSetting.containsKey('header')){
             connSetting.get('header').putAll(fillMapHeader(path.Headers__c));
             for(String param : connSetting.get('header').keySet()) {
