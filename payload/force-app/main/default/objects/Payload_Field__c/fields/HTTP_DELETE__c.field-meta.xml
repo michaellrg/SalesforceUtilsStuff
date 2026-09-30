@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HTTP_DELETE__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Specifies whether the current payload gen. record can be utilized during the corresponding operation.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Specifies whether the current payload gen. record can be utilized during the corresponding operation.</inlineHelpText>
+    <label>HTTP DELETE</label>
+    <type>Checkbox</type>
+</CustomField>

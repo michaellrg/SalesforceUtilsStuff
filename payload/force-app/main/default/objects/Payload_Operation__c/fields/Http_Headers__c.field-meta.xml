@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Http_Headers__c</fullName>
+    <defaultValue>&quot;Accept: application/json&quot; &amp; BR() &amp; &quot;Content-Type:application/json&quot;</defaultValue>
+    <description>Header attributes - common use-cases set as default:
+Accept: application/json
+Content-Type:application/json</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Header attributes, name/value per line, i.e.:
+Accept: application/json
+Content-Type:application/json
+Authorization : Bearer &lt;token&gt;</inlineHelpText>
+    <label>Http Headers</label>
+    <length>50048</length>
+    <type>LongTextArea</type>
+    <visibleLines>30</visibleLines>
+</CustomField>

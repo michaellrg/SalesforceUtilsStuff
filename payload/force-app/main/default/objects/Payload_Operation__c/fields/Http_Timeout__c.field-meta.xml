@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Http_Timeout__c</fullName>
+    <defaultValue>120000</defaultValue>
+    <description>Timeout value for HttpRequest setTimeout() method</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Timeout value for HttpRequest setTimeout() method</inlineHelpText>
+    <label>Http Timeout</label>
+    <precision>6</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

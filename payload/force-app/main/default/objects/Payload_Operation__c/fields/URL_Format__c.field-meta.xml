@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>URL_Format__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>If checked, endpoint is formatted by replacing all placeholders with dynamic parameters
+i.e. https://abc.com/service/merge/{0}/{1} will be converted to https://abc.com/service/merge/c1/c2</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If checked, endpoint is formatted by replacing all placeholders with dynamic parameters
+i.e. https://abc.com/service/merge/{0}/{1} will be converted to https://abc.com/service/merge/c1/c2</inlineHelpText>
+    <label>URL Format</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grouping_Array__c</fullName>
+    <description>This specifies to which grouping array this field belongs (if applicable). ONLY UTILIZED in cases where the values come from a SUB-Node/Record. Otherwise, specify the array in the path directly.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This specifies to which grouping array this field belongs (if applicable). ONLY UTILIZED in cases where the values come from a SUB-Node/Record. Otherwise, specify the array in the path directly.</inlineHelpText>
+    <label>Grouping Array</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

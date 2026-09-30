@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exception_Description_HTML__c</fullName>
+    <description>Response from remote endpoint, the content should be json or html.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Response from remote endpoint, the content should be json or html.</inlineHelpText>
+    <label>Remote Response</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>Html</type>
+    <visibleLines>25</visibleLines>
+</CustomField>

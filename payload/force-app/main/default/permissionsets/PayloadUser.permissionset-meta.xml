@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Payload User</label>
+    <description>Runtime access to generate, parse, transmit, and log Salesforce Utils Payload framework messages.</description>
+    <classAccesses><apexClass>Logger</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PayloadGenerator</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PayloadInboundParser</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PayloadLog</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PayloadOperation</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>PayloadResponseProcessor</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>TransmitUtils</apexClass><enabled>true</enabled></classAccesses>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Payload_Field__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Payload_Operation__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Log__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>LogEvent__e</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+</PermissionSet>

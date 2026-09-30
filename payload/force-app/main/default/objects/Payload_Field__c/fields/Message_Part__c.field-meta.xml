@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Message_Part__c</fullName>
+    <defaultValue>"Both"</defaultValue>
+    <description>Identifies whether this mapping belongs to the outbound request, the inbound response, or both.</description>
+    <externalId>false</externalId>
+    <label>Message Part</label>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Request</fullName><default>false</default><label>Request</label></value>
+            <value><fullName>Response</fullName><default>false</default><label>Response</label></value>
+            <value><fullName>Both</fullName><default>true</default><label>Both</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

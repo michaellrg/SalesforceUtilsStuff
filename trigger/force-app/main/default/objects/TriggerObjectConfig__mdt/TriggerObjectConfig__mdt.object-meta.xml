@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Optional object-level activation and Flow configuration for the Trigger framework.</description>
+    <label>Trigger Object Config</label>
+    <pluralLabel>Trigger Object Configs</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

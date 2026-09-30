@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Log Admin</label>
+    <description>Administrative access to configure, inspect, maintain, and remove Salesforce Utils Log framework records.</description>
+    <classAccesses><apexClass>Logger</apexClass><enabled>true</enabled></classAccesses>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>true</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>true</modifyAllRecords><object>Log__c</object><viewAllRecords>true</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>LogEvent__e</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+</PermissionSet>

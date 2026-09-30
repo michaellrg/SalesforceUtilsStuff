@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transformation__c</fullName>
+    <description>Used to transform a value</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Used to transform a value</inlineHelpText>
+    <label>Transformation</label>
+    <length>131070</length>
+    <type>LongTextArea</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

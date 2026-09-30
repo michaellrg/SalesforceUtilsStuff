@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grouping_Level__c</fullName>
+    <defaultValue>1</defaultValue>
+    <description>This specifies the &quot;depth&quot; (in the tree) where the information related to this field can be found. Directly on the main record = 1, on a child record = 2 and so on ...</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This specifies the &quot;depth&quot; (in the tree) where the information related to this field can be found. Directly on the main record = 1, on a child record = 2 and so on ...</inlineHelpText>
+    <label>Grouping Level</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

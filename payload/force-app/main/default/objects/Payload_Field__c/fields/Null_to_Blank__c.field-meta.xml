@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Null_to_Blank__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>In the serialization, convert null value to blank string.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>In the serialization, convert null value to blank string.</inlineHelpText>
+    <label>Null to Blank</label>
+    <type>Checkbox</type>
+</CustomField>

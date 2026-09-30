@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Render_If_Null__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Specifies whether this field/value pairing should be rendered into the resulting JSON if the value is null.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Specifies whether this field/value pairing should be rendered into the resulting JSON if the value is null.</inlineHelpText>
+    <label>Render If Null</label>
+    <type>Checkbox</type>
+</CustomField>

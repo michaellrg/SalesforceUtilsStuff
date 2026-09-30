@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Remote_Endpoint__c</fullName>
+    <description>Remote Endpoint of callout</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Remote Endpoint of callout</inlineHelpText>
+    <label>Remote Endpoint</label>
+    <length>1024</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>8</visibleLines>
+</CustomField>
