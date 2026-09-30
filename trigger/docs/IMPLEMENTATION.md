@@ -14,7 +14,7 @@
 2. Create one or more `TriggerObjectConfig__mdt` records, each with the target Salesforce object API name.
 3. Create one or more `TriggerHandlerConfig__mdt` records for handler classes and select the related object configuration in `SObject__c`.
 4. Set `Execution_Type__c` on each `TriggerHandlerConfig__mdt` record to `Apex` or `Flow`. The framework does not orchestrate Apex and Flow together; if a Flow invokes Apex, that orchestration remains owned by the Flow.
-5. For Flow execution, configure the Flow API name, activation flag, and run context on that same handler record.
+5. For Flow execution, set `Active__c = true` and configure the Flow API name and run context on that same handler record.
 6. Optionally set `Active__c` on the related `TriggerObjectConfig__mdt` record to disable all handlers for that object.
 7. Optionally create an active `TriggerFrameworkUserException__mdt` record for a user that may bypass the persistent global switch.
 

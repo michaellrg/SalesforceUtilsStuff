@@ -152,7 +152,6 @@ public without sharing class TriggerFactory {
       if (
         config.IsActive &&
         config.ExecutionType == 'Flow' &&
-        config.FlowActive &&
         String.isNotBlank(config.FlowName) &&
         shouldRunFlow(config.FlowRunContext)
       ) {

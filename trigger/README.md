@@ -16,7 +16,7 @@ Provides trigger context helpers, configurable handler dispatch, activation cont
 
 ## Flow integration
 
-Configure an autolaunched Flow in the individual `TriggerHandlerConfig__mdt` record with `Execution_Type__c = Flow`, `Flow_Name__c`, `Flow_Active__c = true`, and `Flow_Run_Context__c` set to `Before`, `After`, or `Both`.
+Configure an autolaunched Flow in the individual `TriggerHandlerConfig__mdt` record with `Active__c = true`, `Execution_Type__c = Flow`, `Flow_Name__c`, and `Flow_Run_Context__c` set to `Before`, `After`, or `Both`.
 
 The Flow starts once per trigger transaction, not once per record. It receives these input variables:
 

@@ -32,7 +32,6 @@
                 <behavior>Required</behavior>
                 <field>NamespacePrefix</field>
             </layoutItems>
-            <layoutItems><behavior>Edit</behavior><field>Flow_Active__c</field></layoutItems>
             <layoutItems><behavior>Edit</behavior><field>Flow_Name__c</field></layoutItems>
             <layoutItems><behavior>Edit</behavior><field>Flow_Run_Context__c</field></layoutItems>
         </layoutColumns>

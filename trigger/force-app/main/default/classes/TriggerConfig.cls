@@ -78,7 +78,6 @@ public with sharing class TriggerConfig {
       ? 'Apex'
       : pCfg.Execution_Type__c;
     this.FlowName = pCfg.Flow_Name__c;
-    this.FlowActive = pCfg.Flow_Active__c;
     this.FlowRunContext = String.isBlank(pCfg.Flow_Run_Context__c)
       ? 'After'
       : pCfg.Flow_Run_Context__c;
@@ -93,6 +92,5 @@ public with sharing class TriggerConfig {
   public String SObjectName { get; private set; }
   public String ExecutionType { get; private set; }
   public String FlowName { get; private set; }
-  public Boolean FlowActive { get; private set; }
   public String FlowRunContext { get; private set; }
 }
