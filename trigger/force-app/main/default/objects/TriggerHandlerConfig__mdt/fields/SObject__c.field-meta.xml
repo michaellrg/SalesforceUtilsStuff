@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SObject__c</fullName>
+    <description>References the object-level configuration record that identifies the Salesforce object.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Select the TriggerObjectConfig record for this Salesforce object.</inlineHelpText>
+    <label>Object Configuration</label>
+    <referenceTo>TriggerObjectConfig__mdt</referenceTo>
+    <relationshipLabel>Trigger Configurations</relationshipLabel>
+    <relationshipName>TriggerHandlerConfig</relationshipName>
+    <required>true</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>

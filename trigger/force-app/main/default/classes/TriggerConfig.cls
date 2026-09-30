@@ -19,9 +19,9 @@ public with sharing class TriggerConfig {
     get {
       if (Configurations == null) {
         Configurations = new Map<Schema.SObjectType, TriggerConfig[]>();
-        Map<String, TriggerConfig__mdt> triggerMap = TriggerConfig__mdt.getAll();
+        Map<String, TriggerHandlerConfig__mdt> triggerMap = TriggerHandlerConfig__mdt.getAll();
         for (String key : triggerMap.keySet()) {
-          TriggerConfig__mdt cfg = triggerMap.get(key);
+          TriggerHandlerConfig__mdt cfg = triggerMap.get(key);
           TriggerConfig tc = new TriggerConfig(cfg);
 
           if (!Configurations.containsKey(tc.SObjectType))
@@ -67,7 +67,7 @@ public with sharing class TriggerConfig {
    * @Return        TriggerConfig
    */
   @TestVisible
-  private TriggerConfig(TriggerConfig__mdt pCfg) {
+  private TriggerConfig(TriggerHandlerConfig__mdt pCfg) {
     this.Handler = pCfg.Handler_Name__c;
     this.IsActive = pCfg.Active__c;
     TriggerObjectConfig__mdt objectConfig = String.isBlank(pCfg.SObject__c)

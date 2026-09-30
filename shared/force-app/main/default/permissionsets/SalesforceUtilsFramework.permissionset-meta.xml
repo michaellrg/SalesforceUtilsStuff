@@ -91,7 +91,7 @@
     </objectPermissions>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
-        <name>TriggerConfig__mdt</name>
+        <name>TriggerHandlerConfig__mdt</name>
     </customMetadataTypeAccesses>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>

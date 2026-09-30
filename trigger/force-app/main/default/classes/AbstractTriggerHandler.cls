@@ -20,7 +20,7 @@
       2. ALWAYS use [this.triggers] in your handler - it has the same API as System.Trigger
       3. BECAUSE an instance of [this.triggers] can be used in a future, queue or batch
 
-  (0) - Custom Metadata setup entry in TriggerConfig__mdt:
+  (0) - Custom Metadata setup entry in TriggerHandlerConfig__mdt:
       Label: Example AccountContactRelations
       Name : Example_AccountContactRelations
       Order__c  : 0
