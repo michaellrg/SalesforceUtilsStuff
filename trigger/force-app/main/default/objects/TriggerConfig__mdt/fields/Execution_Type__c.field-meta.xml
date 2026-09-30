@@ -13,7 +13,6 @@
             <sorted>false</sorted>
             <value><fullName>Apex</fullName><default>true</default><label>Apex</label></value>
             <value><fullName>Flow</fullName><default>false</default><label>Flow</label></value>
-            <value><fullName>Both</fullName><default>false</default><label>Both</label></value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

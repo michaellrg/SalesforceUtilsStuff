@@ -70,7 +70,10 @@ public with sharing class TriggerConfig {
   private TriggerConfig(TriggerConfig__mdt pCfg) {
     this.Handler = pCfg.Handler_Name__c;
     this.IsActive = pCfg.Active__c;
-    this.SObjectName = pCfg.SObject__c;
+    TriggerObjectConfig__mdt objectConfig = String.isBlank(pCfg.SObject__c)
+      ? null
+      : TriggerObjectConfig__mdt.getInstance(pCfg.SObject__c);
+    this.SObjectName = objectConfig == null ? null : objectConfig.SObject__c;
     this.ExecutionType = String.isBlank(pCfg.Execution_Type__c)
       ? 'Apex'
       : pCfg.Execution_Type__c;
@@ -79,7 +82,9 @@ public with sharing class TriggerConfig {
     this.FlowRunContext = String.isBlank(pCfg.Flow_Run_Context__c)
       ? 'After'
       : pCfg.Flow_Run_Context__c;
-    this.SObjectType = Schema.getGlobalDescribe().get(this.SObjectName);
+    this.SObjectType = String.isBlank(this.SObjectName)
+      ? null
+      : Schema.getGlobalDescribe().get(this.SObjectName);
   }
 
   public SObjectType SObjectType { get; private set; }

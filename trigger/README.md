@@ -8,7 +8,7 @@ Provides trigger context helpers, configurable handler dispatch, activation cont
 
 ## Configuration layers
 
-- `TriggerConfig__mdt`: enables or disables an individual handler, associates it with an SObject, and selects `Execution_Type__c` as `Apex`, `Flow`, or `Both`.
+- `TriggerConfig__mdt`: enables or disables an individual handler, references a `TriggerObjectConfig__mdt` record through `SObject__c`, and selects `Execution_Type__c` as either `Apex` or `Flow` for that handler record. The framework does not compose Apex and Flow; any Flow-to-Apex orchestration belongs to the Flow.
 - `TriggerObjectConfig__mdt`: enables or disables the entire framework for one SObject.
 - `TriggerFrameworkSettings__mdt`: global persistent switch. The framework includes an active `Global` record by default; set `Active__c` to control the framework globally.
 - `TriggerFactory.turnOff()` / `turnOn()`: transaction-level global override.
@@ -16,7 +16,7 @@ Provides trigger context helpers, configurable handler dispatch, activation cont
 
 ## Flow integration
 
-Configure an autolaunched Flow in the individual `TriggerConfig__mdt` record with `Execution_Type__c = Flow` or `Both`, `Flow_Name__c`, `Flow_Active__c = true`, and `Flow_Run_Context__c` set to `Before`, `After`, or `Both`.
+Configure an autolaunched Flow in the individual `TriggerConfig__mdt` record with `Execution_Type__c = Flow`, `Flow_Name__c`, `Flow_Active__c = true`, and `Flow_Run_Context__c` set to `Before`, `After`, or `Both`.
 
 The Flow starts once per trigger transaction, not once per record. It receives these input variables:
 

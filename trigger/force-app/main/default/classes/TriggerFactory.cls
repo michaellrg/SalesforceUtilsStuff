@@ -113,7 +113,7 @@ public without sharing class TriggerFactory {
 
     if (TriggerConfigs.containsKey(soType)) {
       for (TriggerConfig cfg : TriggerConfigs.get(soType))
-        if (cfg.IsActive && (cfg.ExecutionType == 'Apex' || cfg.ExecutionType == 'Both')) {
+        if (cfg.IsActive && cfg.ExecutionType == 'Apex') {
           cls = cfg.Handler;
 
           if (!TriggerHanlderMap.containsKey(cls))
@@ -151,7 +151,7 @@ public without sharing class TriggerFactory {
     for (TriggerConfig config : TriggerConfigs.get(soType)) {
       if (
         config.IsActive &&
-        (config.ExecutionType == 'Flow' || config.ExecutionType == 'Both') &&
+        config.ExecutionType == 'Flow' &&
         config.FlowActive &&
         String.isNotBlank(config.FlowName) &&
         shouldRunFlow(config.FlowRunContext)
