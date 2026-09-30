@@ -8,11 +8,31 @@
 global without sharing class PayloadInboundParser {
   global class InboundException extends Exception {}
 
+  private class PendingRelationship {
+    private String lookupField;
+    private String parentObjectName;
+    private String parentExternalIdField;
+    private String externalIdValue;
+
+    private PendingRelationship(
+      String lookupFieldValue,
+      String parentObjectNameValue,
+      String parentExternalIdFieldValue,
+      String externalIdValueValue
+    ) {
+      this.lookupField = lookupFieldValue;
+      this.parentObjectName = parentObjectNameValue;
+      this.parentExternalIdField = parentExternalIdFieldValue;
+      this.externalIdValue = externalIdValueValue;
+    }
+  }
+
   global class InboundNode {
     global SObject record { get; private set; }
     global String objectName { get; private set; }
     global Integer depth { get; private set; }
     global InboundNode parent { get; private set; }
+    private Map<String, PendingRelationship> pendingRelationships { get; private set; }
 
     private InboundNode(
       SObject recordValue,
@@ -24,6 +44,7 @@ global without sharing class PayloadInboundParser {
       this.objectName = objectNameValue;
       this.depth = depthValue;
       this.parent = parentValue;
+      this.pendingRelationships = new Map<String, PendingRelationship>();
     }
   }
 
@@ -65,6 +86,7 @@ global without sharing class PayloadInboundParser {
           Salesforce_Field__c,
           Target_Object_Name__c,
           Relationship_Name__c,
+          Cross_Object_Id_Field__c,
           Is_Upsert_Key__c,
           Message_Part__c,
           Direction__c,
@@ -191,8 +213,9 @@ global without sharing class PayloadInboundParser {
         nodesByObject.get(node.objectName).add(node);
       }
 
-      for (String objectName : nodesByObject.keySet()) {
+      for (String objectName : orderObjectsByRelationship(nodesByObject)) {
         List<InboundNode> nodes = nodesByObject.get(objectName);
+        resolveExternalRelationships(nodes);
         List<SObject> records = new List<SObject>();
         for (InboundNode node : nodes) {
           records.add(node.record);
@@ -281,13 +304,53 @@ global without sharing class PayloadInboundParser {
       if (rawValue == null) {
         continue;
       }
+      Schema.DescribeFieldResult fieldDescribe = fields.get(fieldName).getDescribe();
+      if (
+        fieldDescribe.getType() == Schema.DisplayType.Reference &&
+        String.isNotBlank(mapping.Relationship_Name__c) &&
+        String.isNotBlank(mapping.Cross_Object_Id_Field__c)
+      ) {
+        continue;
+      }
       record.put(
         fieldName,
-        convertValue(rawValue, fields.get(fieldName).getDescribe().getType())
+        convertValue(rawValue, fieldDescribe.getType())
       );
     }
 
-    return new InboundNode(record, canonicalObjectName, depth, parent);
+    InboundNode node = new InboundNode(record, canonicalObjectName, depth, parent);
+    for (Payload_Field__c mapping : context.mappingsByObject.get(normalize(targetObject))) {
+      String jsonKey = normalize(mapping.JSON_Field__c);
+      String fieldName = lastPathPart(mapping.Salesforce_Field__c);
+      if (
+        !normalizedValues.containsKey(jsonKey) ||
+        String.isBlank(fieldName) ||
+        !fields.containsKey(fieldName) ||
+        normalizedValues.get(jsonKey) == null ||
+        String.isBlank(mapping.Relationship_Name__c) ||
+        String.isBlank(mapping.Cross_Object_Id_Field__c)
+      ) {
+        continue;
+      }
+      Schema.DescribeFieldResult fieldDescribe = fields.get(fieldName).getDescribe();
+      if (fieldDescribe.getType() != Schema.DisplayType.Reference) {
+        continue;
+      }
+      List<Schema.SObjectType> referenceTypes = fieldDescribe.getReferenceTo();
+      if (referenceTypes.isEmpty()) {
+        throw new InboundException('Relationship field has no target object: ' + fieldName);
+      }
+      node.pendingRelationships.put(
+        fieldName,
+        new PendingRelationship(
+          fieldName,
+          referenceTypes[0].getDescribe().getName(),
+          lastPathPart(mapping.Cross_Object_Id_Field__c),
+          String.valueOf(normalizedValues.get(jsonKey))
+        )
+      );
+    }
+    return node;
   }
 
   private static void applyParentRelationship(
@@ -319,6 +382,137 @@ global without sharing class PayloadInboundParser {
         node.record.put(fieldName, node.parent.record.Id);
       }
     }
+  }
+
+  private static void resolveExternalRelationships(List<InboundNode> nodes) {
+    Map<String, Set<String>> keysByRelationship = new Map<String, Set<String>>();
+    Map<String, PendingRelationship> sampleByRelationship = new Map<String, PendingRelationship>();
+
+    for (InboundNode node : nodes) {
+      for (String lookupField : node.pendingRelationships.keySet()) {
+        if (node.record.get(lookupField) != null) {
+          continue;
+        }
+        PendingRelationship pending = node.pendingRelationships.get(lookupField);
+        String relationshipKey = pending.parentObjectName + '|' + pending.parentExternalIdField;
+        if (!keysByRelationship.containsKey(relationshipKey)) {
+          keysByRelationship.put(relationshipKey, new Set<String>());
+          sampleByRelationship.put(relationshipKey, pending);
+        }
+        keysByRelationship.get(relationshipKey).add(pending.externalIdValue);
+      }
+    }
+
+    Map<String, Map<String, Id>> idsByRelationship = new Map<String, Map<String, Id>>();
+    for (String relationshipKey : keysByRelationship.keySet()) {
+      PendingRelationship sample = sampleByRelationship.get(relationshipKey);
+      idsByRelationship.put(
+        relationshipKey,
+        queryParentIds(
+          sample.parentObjectName,
+          sample.parentExternalIdField,
+          keysByRelationship.get(relationshipKey)
+        )
+      );
+    }
+
+    for (InboundNode node : nodes) {
+      for (String lookupField : node.pendingRelationships.keySet()) {
+        if (node.record.get(lookupField) != null) {
+          continue;
+        }
+        PendingRelationship pending = node.pendingRelationships.get(lookupField);
+        String relationshipKey = pending.parentObjectName + '|' + pending.parentExternalIdField;
+        Id parentId = idsByRelationship.get(relationshipKey).get(pending.externalIdValue);
+        if (parentId == null) {
+          throw new InboundException(
+            'Related ' + pending.parentObjectName + ' not found for ' +
+            pending.parentExternalIdField + '=' + pending.externalIdValue
+          );
+        }
+        node.record.put(lookupField, parentId);
+      }
+    }
+  }
+
+  private static Map<String, Id> queryParentIds(
+    String parentObjectName,
+    String externalIdField,
+    Set<String> externalIdValues
+  ) {
+    Map<String, Id> idsByExternalId = new Map<String, Id>();
+    Schema.SObjectType parentType = Schema.getGlobalDescribe().get(parentObjectName);
+    if (parentType == null) {
+      throw new InboundException('Unknown relationship target object: ' + parentObjectName);
+    }
+    Map<String, Schema.SObjectField> fields = parentType.getDescribe().fields.getMap();
+    if (!fields.containsKey(externalIdField)) {
+      throw new InboundException('Related external ID field does not exist: ' + externalIdField);
+    }
+    if (!fields.get(externalIdField).getDescribe().isExternalId()) {
+      throw new InboundException('Related field must be an External ID: ' + externalIdField);
+    }
+    if (externalIdValues.isEmpty()) {
+      return idsByExternalId;
+    }
+
+    String query =
+      'SELECT Id, ' + externalIdField +
+      ' FROM ' + parentObjectName +
+      ' WHERE ' + externalIdField + ' IN :externalIdValues';
+    for (SObject parent : Database.query(query)) {
+      idsByExternalId.put(valueAsString(parent.get(externalIdField)), (Id) parent.get('Id'));
+    }
+    return idsByExternalId;
+  }
+
+  private static List<String> orderObjectsByRelationship(
+    Map<String, List<InboundNode>> nodesByObject
+  ) {
+    Map<String, Set<String>> dependencies = new Map<String, Set<String>>();
+    for (String objectName : nodesByObject.keySet()) {
+      dependencies.put(objectName, new Set<String>());
+      for (InboundNode node : nodesByObject.get(objectName)) {
+        for (PendingRelationship pending : node.pendingRelationships.values()) {
+          if (nodesByObject.containsKey(pending.parentObjectName)) {
+            dependencies.get(objectName).add(pending.parentObjectName);
+          }
+        }
+      }
+    }
+
+    List<String> ordered = new List<String>();
+    Set<String> processed = new Set<String>();
+    while (processed.size() < nodesByObject.size()) {
+      Boolean added = false;
+      for (String objectName : nodesByObject.keySet()) {
+        if (processed.contains(objectName)) {
+          continue;
+        }
+        Boolean ready = true;
+        for (String dependency : dependencies.get(objectName)) {
+          if (!processed.contains(dependency)) {
+            ready = false;
+            break;
+          }
+        }
+        if (!ready) {
+          continue;
+        }
+        ordered.add(objectName);
+        processed.add(objectName);
+        added = true;
+      }
+      if (!added) {
+        for (String objectName : nodesByObject.keySet()) {
+          if (!processed.contains(objectName)) {
+            ordered.add(objectName);
+            processed.add(objectName);
+          }
+        }
+      }
+    }
+    return ordered;
   }
 
   private static Schema.SObjectField findExternalIdField(
@@ -412,5 +606,9 @@ global without sharing class PayloadInboundParser {
     }
     List<String> parts = value.split('\\.');
     return parts[parts.size() - 1];
+  }
+
+  private static String valueAsString(Object value) {
+    return value == null ? null : String.valueOf(value);
   }
 }

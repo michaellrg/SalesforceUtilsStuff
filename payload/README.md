@@ -10,13 +10,15 @@ Provides configurable REST/SOAP payload generation, inbound JSON parsing, respon
 
 `Direction__c` accepts `Inbound`, `Outbound`, or `Both`. `Message_Part__c` separates mappings used by the outbound `Request`, the returned `Response`, or `Both`.
 
-Inbound mappings use `Target_Object_Name__c`, `Relationship_Name__c`, and `Is_Upsert_Key__c` to materialize SObjects, connect nested levels, and select an external ID for upsert.
+Inbound mappings use `Target_Object_Name__c`, `Relationship_Name__c`, `Cross_Object_Id_Field__c`, and `Is_Upsert_Key__c` to materialize SObjects, connect nested levels, and select external IDs for upsert. For a child lookup resolved from a parent external ID, map the child lookup field (for example `AccountId`), set `Relationship_Name__c` to the parent relationship (`Account`), and set `Cross_Object_Id_Field__c` to the parent external ID field (`Integration_Key__c`).
 
 ## Inbound formats
 
 `PayloadInboundParser.parse()` supports a single object, root arrays, nested arrays, multiple SObjects, and flat child records. `PayloadInboundParser.upsertRecords()` groups records by SObject and depth, persisting parents before children.
 
 The parser supports structures such as Account → Contact → Case and flat Contact records that carry `AccountId`.
+
+For flat relationships, the child can carry the parent's external key instead of a Salesforce Id. The parser queries parent IDs in bulk and processes object dependencies before child DML.
 
 ## Response matching
 

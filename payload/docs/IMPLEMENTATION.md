@@ -12,9 +12,10 @@
 1. Create a `Payload_Operation__c` record.
 2. Select `Direction__c` and, for request/response operations, `Response_Mode__c`.
 3. Create `Payload_Field__c` mappings with JSON field, Salesforce field, target object, and direction.
-4. For nested inbound data, set `Relationship_Name__c` on child mappings.
+4. For nested inbound data, set `Relationship_Name__c` on child lookup mappings. For a parent external-ID reference, set `Cross_Object_Id_Field__c` to the parent's External ID field.
 5. For inbound upsert, mark one external ID mapping with `Is_Upsert_Key__c`.
-6. For response updates, mark one mapping per object with `Is_Match_Key__c` and optionally set `Match_Salesforce_Field__c`.
+6. For flat child data, map the JSON parent key to the child lookup field, set `Relationship_Name__c` to the parent relationship name, and set `Cross_Object_Id_Field__c` to the parent's External ID field. The parser resolves these references in bulk before child DML.
+7. For response updates, mark one mapping per object with `Is_Match_Key__c` and optionally set `Match_Salesforce_Field__c`.
 
 ## Bulk limits
 
